@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+{% block imports %}
+{% endblock %}
+{% block content %}
+    {#        <div>#}
+    {#            <button type="button" class="test-button">test</button>#}
+    {#        </div>#}
+    <div class="section container">
+        <div class="row`">
+            <div class="col">
+                <ul class="tabs custom-tabs">
+                    <li class="tab col"><a href="#query">Query</a></li>
+                    <li class="tab col"><a href="#about">About</a></li>
+                </ul>
+            </div>
+
+        </div>
+        <div id='query'>
+            <h5>Query Form</h5>
+            <div class="row custom-row">
+                <form id="basic_form" action="" method="post">
+                    <fieldset>
+                        <div class="input-field">
+                            {{ basic_form.full_name(class_="autocomplete") }}
+                            {{ basic_form.full_name.label }}
+                        </div>
+                        <div class="input-field">
+                            {{ basic_form.district }}
+                            {{ basic_form.district.label }}
+
+                        </div>
+                        <div class="input-field">
+                            {{ basic_form.state_name }}
+                            {{ basic_form.state_name.label }}
+
+                        </div>
+                        <div class="input-field">
+                            {{ basic_form.party_name }}
+                            {{ basic_form.party_name.label }}
+
+                        </div>
+                        <div class="row">
+                            <div class="col s2 m2 l2">
+                                <div class="input-field">
+                                    <select id="basic_date_conditional">
+                                        <option selected value="<">Before</option>
+                                        <option selected value=">">After</option>
+                                        <option selected value="=">On</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col s8 m8 l10">
+                                <div class="input-field">
+                                    <input type="text" id="speech_date" name="speech_date" class="datepicker">
+                                    <label for="speech_date">Date</label>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </fieldset>
+                </form>
+            </div>
+            <div class="row">
+                <ul class="collapsible">
+                    <li>
+                        <div class="collapsible-header">Options</div>
+                        <div class="collapsible-body">
+                            <form id="option_form" class="option-form">
+                                <div class="input-field">
+                                    <select multiple name="column_select" id="column_select">
+                                        <option selected value="full_name">Full Name</option>
+                                        <option selected value="party_name">Party Name</option>
+                                        <option selected value="speech_text">Speech Text</option>
+                                        <option selected value="speech_date">Speech Date</option>
+                                    </select>
+                                    <label for="column_select">Columns</label>
+                                </div>
+                                <label>
+                                    <input id='display_query_checkbox' type='checkbox'/>
+                                    <span>Display SQL Query?</span>
+                                </label>
+                            </form>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="collapsible-header">Advance</div>
+                        <div class="collapsible-body">
+
+                            <form id="advance_form" class="advance-form">
+
+                                <fieldset class="advance-query-fieldset" id="advance_query_fieldset">
+                                    <div class="row">
+                                        <div class="input-field col s12 m3 l2">
+                                            <select name="logic_operator" id="logic_operator">
+                                                <option value="AND">AND</option>
+                                                <option value="OR">OR</option>
+                                            </select>
+                                            <label for="logic_operator">Logic Operator</label>
+                                        </div>
+                                        <div class="input-field col s12 m3 l3  " id="field_div">
+                                            <select name="field" id="field" onchange="ChangeValueField(this)">
+                                                <option value="district">district</option>
+                                                <option value="full_name">full_name</option>
+                                                <option value="state_name">state</option>
+                                                <option value="party">party</option>
+                                                <option value="speech_text">speech_text</option>
+                                                <option value="word_count">word_count</option>
+                                                <option value="land_sqm">land_sqm</option>
+                                                <option value="population_total">population_total</option>
+                                                <option value="density_quintile">density_quintile</option>
+                                                <option value="chamber_name">chamber_name</option>
+                                                <option value="occasion_name">occasion_name</option>
+                                                <option value="role_name">role_name</option>
+                                                <option value="proceeding_name">proceeding_name</option>
+                                            </select>
+                                            <label for="field">Field</label>
+                                        </div>
+                                        <div class="input-field col s12 m3 l2" id="conditional_div">
+                                            <select id="conditional" name="conditional">
+                                                <option value="=">=</option>
+                                                <option value="!=">!=</option>
+                                            </select>
+                                            <label for="conditional">Conditional</label>
+                                        </div>
+                                        <div class="input-field col s12 m3 l5" id="value_div">
+                                            <input type="text" name="value" id="value"/>
+                                            <label for="value">Value</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row right">
+
+                                        <button type='button' class="btn-floating btn-small left remove-button"
+                                                style="display:none;">-
+                                        </button>
+                                        <button type="button" class="btn-floating btn-small add-button">+
+                                        </button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <button class="btn" type="button" onclick="Query()">Query</button>
+                </div>
+                <div class="col">
+                    <button class="btn reset-button" type="button">Reset</button>
+                </div>
+                <div class="col" id='download'>
+                    <button class="btn disabled" type="button">Download</button>
+                </div>
+
+                <div class="col">
+                    <div class="query-spinner">
+                        <div class="preloader-wrapper small active">
+                            <div class="spinner-layer spinner-blue-only">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col" id="results-found">
+                    <p></p>
+
+                </div>
+                <div class="col right custom-issue">
+                    <p> &#128681 Spotted an issue? Please send us a <a
+                            href="http://link%20to%20google%20form/">message</a>.</p>
+                </div>
+
+            </div>
+            <div class="row">
+                <h5>Sample Results:</h5>
+                <div class="container custom-table-div">
+                    <table>
+                        <thead>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div class="row" id="after_query_message">
+                <p></p>
+            </div>
+        </div>
+        <div id="about">
+            <div class="row">
+                About page info
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

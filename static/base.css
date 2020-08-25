@@ -1,0 +1,84 @@
+* {
+  font-family: 'Open Sans', sans-serif;
+}
+
+fieldset {
+  border: none;
+}
+
+.advance-query-fieldset {
+  border-bottom: solid;
+  border-bottom-color: #f0f0f0;
+}
+
+.remove-button {
+  display: none;
+  right: 5px;
+}
+
+.custom-table-div {
+  width: 100%;
+  overflow: scroll;
+  height: 30rem;
+}
+
+.custom-row {
+  -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+          box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.2);
+}
+
+.btn, .btn-floating {
+  background-color: #379BC9;
+}
+
+h5 {
+  font-family: proxima-nova, sans-serif;
+  font-style: normal;
+  font-weight: 100;
+  color: #47535A;
+  margin: 25px 0px 25px 0px;
+}
+
+td, th {
+  padding: 0px 15px;
+}
+
+th {
+  text-align: center;
+}
+
+.dropdown-content li > a, .dropdown-content li > span {
+  color: #379BC9;
+}
+
+.custom-tabs .tab {
+  overflow: hidden;
+}
+
+.custom-tabs .tab a {
+  color: black !important;
+}
+
+.custom-tabs .tab a:hover {
+  background-color: white;
+  color: #379BC9;
+}
+
+.custom-tabs .tab a:active {
+  background-color: blue;
+  color: black;
+}
+
+.custom-tabs .tab a:focus {
+  background-color: white !important;
+  color: #379BC9 !important;
+}
+
+.custom-tabs .indicator {
+  background-color: #379BC9;
+}
+
+.custom-issue {
+  font-size: 12px;
+}
+/*# sourceMappingURL=base.css.map */

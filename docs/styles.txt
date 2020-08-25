@@ -1,0 +1,20 @@
+Fonts:
+
+Body fonts: Open Sans (https://fonts.google.com/specimen/Open+Sans?selection.family=Open+Sans&sidebar.open)
+Headings fonts: Proxima Nova (if possible) (https://fonts.adobe.com/fonts/proxima-nova)
+
+ 
+
+Material design as UI framework for tables (https://material.io/design)
+
+ 
+
+Colors:
+
+Text heading color: #47535A
+
+Primary color (for sections/background): #123951
+
+Link color: #2C536C
+
+Accent color: #379BC9
