@@ -5,8 +5,6 @@ from typing import Union, Tuple, List
 
 import pandas as pd
 
-from sqlalchemy.inspection import inspect
-
 from datetime import datetime
 
 
@@ -118,7 +116,7 @@ class QueryParser():
 
 
 class QueryFilter:
-    def __init__(self, where_data: List[dict],empty_values:list = ['','choose a value']):
+    def __init__(self, where_data: List[dict], empty_values: list = ['', 'choose a value']):
         self.where_data = where_data
         self.empty_values = empty_values
 
@@ -129,12 +127,11 @@ class QueryFilter:
         if item['value'].lower() in self.empty_values:
             return self.where_data
 
-        index = [index for index,where_item in enumerate(self.where_data) if where_item['field'] == date_column][0]
+        index = [index for index, where_item in enumerate(self.where_data) if where_item['field'] == date_column][0]
         item['value'] = datetime.strptime(item['value'], from_format).strftime(to_format)
 
         self.where_data[index] = item
         return self.where_data
-
 
 
 if __name__ == "__main__":
@@ -240,7 +237,7 @@ if __name__ == "__main__":
             ]
     }
 
-    query_filter = QueryFilter(data['where'],['','choose a value'])
+    query_filter = QueryFilter(data['where'], ['', 'choose a value'])
     data['where'] = query_filter.reformat_date(date_column='speech_date', from_format='%b %d, %Y')
     for item in data['where']:
         print(item)
