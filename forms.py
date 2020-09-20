@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,  SubmitField,  SelectField
+from wtforms import StringField, SubmitField, SelectField
 
 
 class BasicQueryForm(FlaskForm):
@@ -7,7 +7,7 @@ class BasicQueryForm(FlaskForm):
     district_list.insert(0, "Choose a Value")
     # basic form
     full_name = StringField("Full Name")
-    district = SelectField("District", choices=district_list)
+    district_number = SelectField("District", choices=district_list)
     state_name = SelectField("State",
                              choices=["Choose A Value", "Alaska", "Alabama", "Arkansas", "American Samoa", "Arizona",
                                       "California",
@@ -23,9 +23,3 @@ class BasicQueryForm(FlaskForm):
     party_name = SelectField("Party", choices=["Choose A Value", "Democrat", "Republican", "Independent"])
     date = StringField("Speech Date")
     submit = SubmitField("Query")
-
-
-
-
-
-

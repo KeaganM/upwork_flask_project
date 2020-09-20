@@ -26,7 +26,7 @@ var config = {
         party_name: new QueryParameter("equate_only", ["Choose a value", "Democrat", "Republican", "Independent"]),
         full_name: new QueryParameter("equate_only"),
         word_count: new QueryParameter("all"),
-        district: new QueryParameter("equate_only", districts()),
+        district_number: new QueryParameter("equate_only", districts()),
         state_name: new QueryParameter("equate_only", ["Choose a Value", "Alaska", "Alabama", "Arkansas", "American Samoa", "Arizona", "California", "Colorado", "Connecticut", "District of Columbia", "Delaware", "Florida", "Georgia", "Guam", "Hawaii", "Iowa", "Idaho", "Illinois", "Indiana", "Kansas", "Kentucky", "Louisiana", "Massachusetts", "Maryland", "Maine", "Michigan", "Minnesota", "Missouri", "Mississippi", "Montana", "North Carolina", "North Dakota", "Nebraska", "New Hampshire", "New Jersey", "New Mexico", "Nevada", "New York", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Puerto Rico", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Virginia", "Virgin Islands", "Vermont", "Washington", "Wisconsin", "West Virginia", "Wyoming"]),
         chamber_name: new QueryParameter("equate_only", ["Choose a Value", "house", "joint", "senate"]),
         occasion_name: new QueryParameter("equate_only", ["Choose a Value", "floor", "hearing"]),
@@ -62,6 +62,22 @@ var $advance_query_fieldset_html = $(config.advance_query_fieldset)
     .html()
 
 // function ************************************************************************************************************
+
+function update_autocomplete(element) {
+    element.bind('input', function () {
+        names_input = {name: element.val()}
+        if (names_input['name'] != '') {
+            request("/api/v1/database/names", names_input, 'GET', 'application/json;charset=uf-8', (response) => {
+                names_data = JSON.parse(response)
+                $("input.autocomplete").autocomplete({
+                    data: names_data
+                });
+            })
+
+        }
+    })
+}
+
 
 function reset_form() {
     $("form").trigger("reset");
@@ -211,7 +227,8 @@ function Query() {
 
             if (data == 'no records found') {
                 //TODO make alert box pretty
-                alert("no records found")
+                // alert("no records found")
+                M.toast({html:'No records found'})
                 reset_elements([$("#after_query_message").find('p'), $('#results-found').find('p')],
                     ['<p></p>', '<p></p>'])
 
@@ -228,7 +245,7 @@ function Query() {
                 //     $tr.appendTo($new_table).find("thead")
                 // });
                 create_col_names(keys, $new_table);
-                fill_table(keys,$new_table);
+                fill_table(keys, $new_table);
 
                 // fills table
                 // $(function () {
@@ -275,9 +292,8 @@ function ChangeValueField(el) {
     $("<div class='input-field col s12 m3 l5' id=value_div>" + values[0] + "<label for=value>Value</label></div>")
         .insertAfter($parent.find("#conditional_div"));
 
-    $(".autocomplete").autocomplete({
-        data: names_data
-    });
+    $parent.find('#field_div :selected').text() == 'full_name' ? update_autocomplete($parent.find("#value_div").find('input')) : null;
+
     $("select").formSelect();
 }
 
@@ -332,20 +348,12 @@ $(document).ready(function () {
     });
 
     // get names from api and create autocomplee
-    $.ajax({
-        type: "GET",
-        url: "/api/v1/database/names",
-        // data: JSON.stringify(data),
-        contentType: "application/json; charset=utf-8",
-        success: function (response) {
-            names_data = JSON.parse(response)
-
-            $("input.autocomplete").autocomplete({
-                data: names_data
-            });
-        }
-    })
+    // https://gist.github.com/brandonaaskov/1596867
+    update_autocomplete($('#full_name'))
 });
+
+
+// ******************* tests
 
 
 // ********************* go through later

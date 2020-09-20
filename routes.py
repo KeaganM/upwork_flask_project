@@ -69,10 +69,15 @@ def csv():
 
     return response
 
-
+# https://stackoverflow.com/questions/10434599/get-the-data-received-in-a-flask-request
 @application.route('/api/v1/database/names', methods=["GET"])
 def names():
-    query = "SELECT full_name FROM person_list"
+    print('here')
+    name = request.args['name']
+    query =  f"SELECT first_name || ' ' || last_name as full_name_combo FROM person_list WHERE full_name_combo LIKE '{name}%'"
+    print(query)
     results = db.query(query, connect_and_close=True)
+    # print(results)
+    print(len(results))
 
     return json.dumps({name[0]: None for name in results})
