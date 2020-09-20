@@ -1,24 +1,13 @@
-from config import application, db
-from flask import send_file, render_template, url_for, flash, redirect, request, abort, render_template_string, session, \
-    make_response
-from forms import BasicQueryForm
 import json
 
-from utils.db_functions import connect_db, get_column_names, query_database, list_to_json
-from utils.database import QueryParser,QueryFilter
-from utils.utils import truncate
+from flask import render_template, request, session, make_response
+from forms import BasicQueryForm
 import pandas as pd
 
+from config import application, db
+from utils.database import QueryParser, QueryFilter
+from utils.utils import truncate
 
-
-
-# @application.route('/')
-# def main():
-#     """
-#     This function redirects the root page to the home route.
-#     :return: redirect to home
-#     """
-#     return redirect(url_for("home"))
 
 # TODO may want to seperate this out and make the querying part into an api
 @application.route('/', methods=["GET", "POST"])
@@ -36,13 +25,11 @@ def base():
     if request.method == "POST":
 
         raw_data = request.json["data"]
-        raw_data['where'] = QueryFilter(raw_data['where']).reformat_date(date_column='speech_date', from_format='%b %d, %Y')
+        raw_data['where'] = QueryFilter(raw_data['where']).reformat_date(date_column='speech_date',
+                                                                         from_format='%b %d, %Y')
         query, columns = QueryParser(raw_data, "advance_data_view", 500).parse()
-        # print('query is:')
-        # print(query)
+
         results = db.query(query, connect_and_close=True)
-        # print('results are:')
-        # print(results)
 
         if len(results) < 1:
             return json.dumps({"data": "no records found", "length": 0, "query": query})
@@ -60,16 +47,15 @@ def base():
         return render_template("home.html", basic_form=basic_form)
 
 
-#
-@application.route("/api/v1/database/csv", methods=["GET"])
+# todo may want to add a post method functionality
+@application.route("/api/v1/database/csv", methods=['GET'])
 def csv():
-    # def pandas_csv_to_csv_string(df: pd.DataFrame):
-    print('in here')
-    try:
-        query = session['current_query']
-        columns = session['current_columns']
-    except KeyError:
-        return {'data': 'no query found'}
+    if request.method == 'GET':
+        try:
+            query = session['current_query']
+            columns = session['current_columns']
+        except KeyError:
+            return {'data': 'no query found'}
 
     results = db.query(query, connect_and_close=True)
     results_list = db.query_results_to_json(results, columns)
@@ -83,12 +69,15 @@ def csv():
 
     return response
 
-
-#
-
+# https://stackoverflow.com/questions/10434599/get-the-data-received-in-a-flask-request
 @application.route('/api/v1/database/names', methods=["GET"])
 def names():
-    query = "SELECT full_name FROM person_list"
+    print('here')
+    name = request.args['name']
+    query =  f"SELECT first_name || ' ' || last_name as full_name_combo FROM person_list WHERE full_name_combo LIKE '{name}%'"
+    print(query)
     results = db.query(query, connect_and_close=True)
+    # print(results)
+    print(len(results))
 
     return json.dumps({name[0]: None for name in results})

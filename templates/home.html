@@ -2,9 +2,9 @@
 {% block imports %}
 {% endblock %}
 {% block content %}
-    {#        <div>#}
-    {#            <button type="button" class="test-button">test</button>#}
-    {#        </div>#}
+    {#    <div>#}
+    {#        <button type="button" class="test-button" onclick="test()">test</button>#}
+    {#    </div>#}
     <div class="section container">
         <div class="row`">
             <div class="col">
@@ -25,8 +25,8 @@
                             {{ basic_form.full_name.label }}
                         </div>
                         <div class="input-field">
-                            {{ basic_form.district }}
-                            {{ basic_form.district.label }}
+                            {{ basic_form.district_number }}
+                            {{ basic_form.district_number.label }}
 
                         </div>
                         <div class="input-field">
@@ -74,6 +74,8 @@
                                         <option selected value="party_name">Party Name</option>
                                         <option selected value="speech_text">Speech Text</option>
                                         <option selected value="speech_date">Speech Date</option>
+                                        <option selected value="state_name">State</option>
+
                                     </select>
                                     <label for="column_select">Columns</label>
                                 </div>
@@ -101,19 +103,19 @@
                                         </div>
                                         <div class="input-field col s12 m3 l3  " id="field_div">
                                             <select name="field" id="field" onchange="ChangeValueField(this)">
-                                                <option value="district">district</option>
+                                                <option value="district_number">district</option>
                                                 <option value="full_name">full_name</option>
                                                 <option value="state_name">state</option>
-                                                <option value="party">party</option>
+                                                <option value="party_name">party</option>
                                                 <option value="speech_text">speech_text</option>
                                                 <option value="word_count">word_count</option>
-                                                <option value="land_sqm">land_sqm</option>
-                                                <option value="population_total">population_total</option>
-                                                <option value="density_quintile">density_quintile</option>
-                                                <option value="chamber_name">chamber_name</option>
-                                                <option value="occasion_name">occasion_name</option>
-                                                <option value="role_name">role_name</option>
-                                                <option value="proceeding_name">proceeding_name</option>
+                                                {#                                                <option value="land_sqm">land_sqm</option>#}
+                                                {#                                                <option value="population_total">population_total</option>#}
+                                                {#                                                <option value="density_quintile">density_quintile</option>#}
+                                                {#                                                <option value="chamber_name">chamber_name</option>#}
+                                                {#                                                <option value="occasion_name">occasion_name</option>#}
+                                                {#                                                <option value="role_name">role_name</option>#}
+                                                {#                                                <option value="proceeding_name">proceeding_name</option>#}
                                             </select>
                                             <label for="field">Field</label>
                                         </div>
@@ -205,6 +207,11 @@
             </div>
         </div>
     </div>
+{#    <div id="modal1" class="modal">#}
+{#        <div class="modal-content">#}
+{#            test#}
+{#        </div>#}
+{#    </div>#}
 
 
 {% endblock %}
