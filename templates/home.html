@@ -69,12 +69,14 @@
                         <div class="collapsible-body">
                             <form id="option_form" class="option-form">
                                 <div class="input-field">
+{#                                    todo: may want to add this part into the js(along with other parts in here) so everything is in the same spot#}
                                     <select multiple name="column_select" id="column_select">
                                         <option selected value="full_name">Full Name</option>
                                         <option selected value="party_name">Party Name</option>
                                         <option selected value="speech_text">Speech Text</option>
                                         <option selected value="speech_date">Speech Date</option>
                                         <option selected value="state_name">State</option>
+                                        <option selected value="district_number">District</option>
 
                                     </select>
                                     <label for="column_select">Columns</label>
@@ -109,13 +111,8 @@
                                                 <option value="party_name">party</option>
                                                 <option value="speech_text">speech_text</option>
                                                 <option value="word_count">word_count</option>
-                                                {#                                                <option value="land_sqm">land_sqm</option>#}
-                                                {#                                                <option value="population_total">population_total</option>#}
-                                                {#                                                <option value="density_quintile">density_quintile</option>#}
-                                                {#                                                <option value="chamber_name">chamber_name</option>#}
-                                                {#                                                <option value="occasion_name">occasion_name</option>#}
-                                                {#                                                <option value="role_name">role_name</option>#}
-                                                {#                                                <option value="proceeding_name">proceeding_name</option>#}
+                                                <option value="word_count">word_count</option>
+
                                             </select>
                                             <label for="field">Field</label>
                                         </div>
@@ -207,11 +204,11 @@
             </div>
         </div>
     </div>
-{#    <div id="modal1" class="modal">#}
-{#        <div class="modal-content">#}
-{#            test#}
-{#        </div>#}
-{#    </div>#}
+    {#    <div id="modal1" class="modal">#}
+    {#        <div class="modal-content">#}
+    {#            test#}
+    {#        </div>#}
+    {#    </div>#}
 
 
 {% endblock %}

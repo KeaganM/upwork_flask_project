@@ -1,13 +1,9 @@
-from flask import Flask
-from flask_bootstrap import Bootstrap
-from utils.database import Database
+from application import current_settings
 
-application = Flask(__name__)
 
-application.config["SECRET_KEY"] = "asupersecretkey"
-
-db = Database(path="sqlite:///static/db/new_09_17_2020/database.db", create_connection=False)
-
-Bootstrap(application)
+if current_settings == 'local':
+    from settings.local import *
+else:
+    from settings.production import *
 
 import routes

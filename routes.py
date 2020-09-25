@@ -13,14 +13,10 @@ from utils.utils import truncate
 @application.route('/', methods=["GET", "POST"])
 def base():
     """
-    - look at google sheet for core/advance fields
-    - may have to choose use judgement for core fields; choose some that are obvious
+    todo: may want to remove basic form and create it in the html since the advance form is created in the html/js
+    todo: return error in case of db connection failure (popup)
 
-    - lazy loading of js functions (load when need them)
-
-    - if we are limiting the amount of data we can query, then you may be able to simply save it and send it through the csv route
     """
-
     basic_form = BasicQueryForm()
     if request.method == "POST":
 
@@ -69,12 +65,13 @@ def csv():
 
     return response
 
+
 # https://stackoverflow.com/questions/10434599/get-the-data-received-in-a-flask-request
 @application.route('/api/v1/database/names', methods=["GET"])
 def names():
     print('here')
     name = request.args['name']
-    query =  f"SELECT first_name || ' ' || last_name as full_name_combo FROM person_list WHERE full_name_combo LIKE '{name}%'"
+    query = f"SELECT full_name FROM person_list_view WHERE full_name LIKE '{name}%' LIMIT 100"
     print(query)
     results = db.query(query, connect_and_close=True)
     # print(results)
