@@ -1,2 +1,11 @@
 /static/db/
 /static/node_modules/
+/proto/
+/dist/
+/docs/
+/migrations/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
