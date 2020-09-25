@@ -1,4 +1,4 @@
-current_settings = 'local'
+current_settings = 'production'
 
 from config import *
 
