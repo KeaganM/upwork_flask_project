@@ -24,6 +24,8 @@ state_name,
 district_number,
 speaker_list.party_id,
 party_name,
+speech_list.chamber_id,
+chamber_name,
 hearing_title
 -- speech_text,word_count
 FROM speech_list
@@ -36,7 +38,8 @@ LEFT JOIN constituency_list on constituency_list.constituency_id = speaker_list.
 LEFT JOIN party_list on party_list.party_id = speaker_list.speaker_id
 -- hearing title
 LEFT JOIN hearing_speech on hearing_speech.speech_id = speech_list.speech_id
-LEFT JOIN hearing_list on hearing_list.hearing_id = hearing_speech.hearing_id;
+LEFT JOIN hearing_list on hearing_list.hearing_id = hearing_speech.hearing_id
+LEFT JOIN chamber_list on speech_list.chamber_id = chamber_list.chamber_id ;
 
 -- you need three helper views in this database:
 -- one each to back out the speaker_id, the constituency_id and the party_id. 
