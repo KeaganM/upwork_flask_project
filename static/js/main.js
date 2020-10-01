@@ -194,7 +194,7 @@ function Query() {
             var length = parsed_response["length"];
             // var display_data = data.slice(0, 500);
 
-            var $message_string = $('<p>' + 'The first ' + length + ' results are displayed above. To download all results, please submit a Data Request using this <a href="https://forms.gle/Eo7oDiXNgDqVaYvNA">form</a>.</p>')
+            var $message_string = $('<p>' + 'The first ' + length + ' results are displayed above. To download all results, please submit a data request using this <a href="https://forms.gle/Eo7oDiXNgDqVaYvNA" target="_blank">form</a>.</p>')
             var message = $display_query_checkbox.is(':checked') ? $message_string.append("<p>Query: " + query + "</p>") : $message_string
 
             function create_col_names(col_names, table_element) {
