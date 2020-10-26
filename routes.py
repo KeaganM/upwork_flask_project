@@ -8,6 +8,8 @@ from config import application, db
 from utils.database import QueryParser, QueryFilter
 from utils.utils import truncate
 
+# from models import AdvanceDataView
+
 
 # TODO may want to seperate this out and make the querying part into an api
 @application.route('/', methods=["GET", "POST"])
@@ -21,10 +23,14 @@ def base():
     if request.method == "POST":
 
         raw_data = request.json["data"]
+        print('raw data is:')
+        print(raw_data)
         raw_data['where'] = QueryFilter(raw_data['where']).reformat_date(date_column='speech_date',
                                                                          from_format='%b %d, %Y')
-        query, columns = QueryParser(raw_data, "advance_data_view", 500).parse()
+        print(raw_data['where'])
 
+        query, columns = QueryParser(raw_data, "advance_data_view2", 500).parse()
+        print(f'query is:\n {query}')
         results = db.query(query, connect_and_close=True)
 
         if len(results) < 1:
@@ -69,12 +75,8 @@ def csv():
 # https://stackoverflow.com/questions/10434599/get-the-data-received-in-a-flask-request
 @application.route('/api/v1/database/names', methods=["GET"])
 def names():
-    print('here')
     name = request.args['name']
-    query = f"SELECT full_name FROM person_list_view WHERE full_name LIKE '{name}%' LIMIT 100"
-    print(query)
+    query = f"SELECT display_name FROM person_list_view WHERE display_name LIKE '{name}%' LIMIT 100"
     results = db.query(query, connect_and_close=True)
-    # print(results)
-    print(len(results))
 
     return json.dumps({name[0]: None for name in results})
