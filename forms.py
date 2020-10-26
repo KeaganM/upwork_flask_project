@@ -3,7 +3,7 @@ from wtforms import StringField, SubmitField, SelectField
 
 
 class BasicQueryForm(FlaskForm):
-    district_list = [x for x in range(1, 436)]
+    district_list = [x for x in range(1, 53)]
     district_list.insert(0, "Choose a Value")
     # basic form
     full_name = StringField("Full Name")
