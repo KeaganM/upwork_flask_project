@@ -2,37 +2,39 @@
 <html lang="en">
 
 <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-        <!--Import Google Icon Font-->
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <!-- Compiled and minified CSS -->
-        <!-- this is the CDN for the materialize css -->
-        <link rel="stylesheet"
-                href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
-        <!-- Compiled and minified CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-        <!-- this is the CDN for the materialze js  -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        <!-- custom css -->
-        <link href="{{ url_for('static',filename='base.css')}}" rel="stylesheet">
-        <!-- custom js  -->
-        <!-- google fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet"> 
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <!-- this is the CDN for the materialize css -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- this is the CDN for the materialze js  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- custom css -->
+    <link href="{{ url_for('static',filename='base.css') }}" rel="stylesheet">
+    <!-- custom js  -->
+    <!-- google fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
 
-        {% block imports %} {% endblock %}
+    {% block imports %} {% endblock %}
 </head>
 <header>
-        {% include "header.html" %}
+    {% include "header.html" %}
 </header>
 <body>
-        {% block content %} {% endblock %}
-        {% include "footer.html" %}
-  <!-- jquery -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <!-- Compiled and minified JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
-  <script src="{{ url_for('static',filename='js/main.js')}}"></script>
+{% block content %} {% endblock %}
+{% include "footer.html" %}
+<!-- jquery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="{{ url_for('static',filename='js/config.js') }}"></script>
+<script src="{{ url_for('static',filename='js/basic_query_form_component.js') }}"></script>
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
+<script  src="{{ url_for('static',filename='js/main.js') }}"></script>
 
 </body>
 <footer></footer>
