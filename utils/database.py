@@ -107,7 +107,7 @@ class QueryParser():
         query_parts["select_statement"] = self._parse_select_part(data["select"])
         query_parts["where_statement"], \
         query_parts["first_where_statement"], \
-        query_parts["where"] = self._parse_where_part(data["where"], ("", "choose a value"))
+        query_parts["where"] = self._parse_where_part(data["where"], ("", "choose a value","choose"))
 
         if return_columns:
             return self._create_query(query_parts), [column.replace(",", "") for column in
@@ -116,7 +116,7 @@ class QueryParser():
 
 
 class QueryFilter:
-    def __init__(self, where_data: List[dict], empty_values: list = ['', 'choose a value']):
+    def __init__(self, where_data: List[dict], empty_values: list = ['', 'choose a value','choose']):
         self.where_data = where_data
         self.empty_values = empty_values
 
@@ -135,9 +135,13 @@ class QueryFilter:
 
 
 if __name__ == "__main__":
-    path = "sqlite:///../static/db/database_mock_old.db"
+    path = "sqlite:///../static/db/database.db"
 
     db = Database(path=path)
+    r = db.query('SELECT * FROM advance_data_view LIMIT 100',True)
+    print(r)
+
+    quit()
 
     # base_table = sqlalchemy.Table('speech_list', db.metadata, autoload=True)
     #
