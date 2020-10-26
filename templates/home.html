@@ -2,9 +2,6 @@
 {% block imports %}
 {% endblock %}
 {% block content %}
-    {#    <div>#}
-    {#        <button type="button" class="test-button" onclick="test()">test</button>#}
-    {#    </div>#}
     <div class="section container">
         <div class="row`">
             <div class="col">
@@ -20,44 +17,46 @@
             <div class="row custom-row">
                 <form id="basic_form" action="" method="post">
                     <fieldset>
-                        <div class="input-field">
-                            {{ basic_form.full_name(class_="autocomplete") }}
-                            {{ basic_form.full_name.label }}
-                        </div>
-                        <div class="input-field">
-                            {{ basic_form.district_number }}
-                            {{ basic_form.district_number.label }}
-
-                        </div>
-                        <div class="input-field">
-                            {{ basic_form.state_name }}
-                            {{ basic_form.state_name.label }}
-
-                        </div>
-                        <div class="input-field">
-                            {{ basic_form.party_name }}
-                            {{ basic_form.party_name.label }}
-
-                        </div>
-                        <div class="row">
-                            <div class="col s2 m2 l2">
-                                <div class="input-field">
-                                    <select id="basic_date_conditional">
-                                        <option selected value="<">Before</option>
-                                        <option selected value=">">After</option>
-                                        <option selected value="=">On</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col s8 m8 l10">
-                                <div class="input-field">
-                                    <input type="text" id="speech_date" name="speech_date" class="datepicker">
-                                    <label for="speech_date">Date</label>
-
-                                </div>
-                            </div>
-
-                        </div>
+{#                        <div class="input-field">#}
+{#                            {{ basic_form.full_name(class_="autocomplete") }}#}
+{#                            {{ basic_form.full_name.label }}#}
+{#                            <input id="display_name" class="autocomplete" name="display_name" type="text">#}
+{#                            <label for="display_name">Full Name</label>#}
+{#                        </div>#}
+{#                        <div class="input-field">#}
+{#                            {{ basic_form.district_number }}#}
+{#                            {{ basic_form.district_number.label }}#}
+{##}
+{#                        </div>#}
+{#                        <div class="input-field">#}
+{#                            {{ basic_form.state_name }}#}
+{#                            {{ basic_form.state_name.label }}#}
+{##}
+{#                        </div>#}
+{#                        <div class="input-field">#}
+{#                            {{ basic_form.party_name }}#}
+{#                            {{ basic_form.party_name.label }}#}
+{##}
+{#                        </div>#}
+{#                        <div class="row">#}
+{#                            <div class="col s2 m2 l2">#}
+{#                                <div class="input-field">#}
+{#                                    <select id="basic_date_conditional">#}
+{#                                        <option selected value="<">Before</option>#}
+{#                                        <option selected value=">">After</option>#}
+{#                                        <option selected value="=">On</option>#}
+{#                                    </select>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                            <div class="col s8 m8 l10">#}
+{#                                <div class="input-field">#}
+{#                                    <input type="text" id="speech_date" name="speech_date" class="datepicker">#}
+{#                                    <label for="speech_date">Date</label>#}
+{##}
+{#                                </div>#}
+{#                            </div>#}
+{##}
+{#                        </div>#}
 
                     </fieldset>
                 </form>
@@ -71,7 +70,7 @@
                                 <div class="input-field">
 {#                                    todo: may want to add this part into the js(along with other parts in here) so everything is in the same spot#}
                                     <select multiple name="column_select" id="column_select">
-                                        <option selected value="full_name">Full Name</option>
+                                        <option selected value="display_name">Display Name</option>
                                         <option selected value="party_name">Party Name</option>
                                         <option selected value="speech_text">Speech Text</option>
                                         <option selected value="speech_date">Speech Date</option>
@@ -106,8 +105,8 @@
                                         <div class="input-field col s12 m3 l3  " id="field_div">
                                             <select name="field" id="field" onchange="ChangeValueField(this)">
                                                 <option value="district_number">district</option>
-                                                <option value="full_name">full_name</option>
-                                                <option value="state_name">state</option>
+                                                <option value="display_name">full_name</option>
+                                                <option value="state_id">state</option>
                                                 <option value="party_name">party</option>
                                                 <option value="speech_text">speech_text</option>
                                                 <option value="word_count">word_count</option>
@@ -202,11 +201,4 @@
             </div>
         </div>
     </div>
-    {#    <div id="modal1" class="modal">#}
-    {#        <div class="modal-content">#}
-    {#            test#}
-    {#        </div>#}
-    {#    </div>#}
-
-
 {% endblock %}
