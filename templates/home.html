@@ -13,51 +13,9 @@
 
         </div>
         <div id='query'>
-            <h5>Query Form</h5>
             <div class="row custom-row">
                 <form id="basic_form" action="" method="post">
                     <fieldset>
-{#                        <div class="input-field">#}
-{#                            {{ basic_form.full_name(class_="autocomplete") }}#}
-{#                            {{ basic_form.full_name.label }}#}
-{#                            <input id="display_name" class="autocomplete" name="display_name" type="text">#}
-{#                            <label for="display_name">Full Name</label>#}
-{#                        </div>#}
-{#                        <div class="input-field">#}
-{#                            {{ basic_form.district_number }}#}
-{#                            {{ basic_form.district_number.label }}#}
-{##}
-{#                        </div>#}
-{#                        <div class="input-field">#}
-{#                            {{ basic_form.state_name }}#}
-{#                            {{ basic_form.state_name.label }}#}
-{##}
-{#                        </div>#}
-{#                        <div class="input-field">#}
-{#                            {{ basic_form.party_name }}#}
-{#                            {{ basic_form.party_name.label }}#}
-{##}
-{#                        </div>#}
-{#                        <div class="row">#}
-{#                            <div class="col s2 m2 l2">#}
-{#                                <div class="input-field">#}
-{#                                    <select id="basic_date_conditional">#}
-{#                                        <option selected value="<">Before</option>#}
-{#                                        <option selected value=">">After</option>#}
-{#                                        <option selected value="=">On</option>#}
-{#                                    </select>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                            <div class="col s8 m8 l10">#}
-{#                                <div class="input-field">#}
-{#                                    <input type="text" id="speech_date" name="speech_date" class="datepicker">#}
-{#                                    <label for="speech_date">Date</label>#}
-{##}
-{#                                </div>#}
-{#                            </div>#}
-{##}
-{#                        </div>#}
-
                     </fieldset>
                 </form>
             </div>
@@ -68,7 +26,6 @@
                         <div class="collapsible-body">
                             <form id="option_form" class="option-form">
                                 <div class="input-field">
-{#                                    todo: may want to add this part into the js(along with other parts in here) so everything is in the same spot#}
                                     <select multiple name="column_select" id="column_select">
                                         <option selected value="display_name">Display Name</option>
                                         <option selected value="party_name">Party Name</option>
@@ -107,8 +64,7 @@
                                                 <option value="district_number">district</option>
                                                 <option value="display_name">full_name</option>
                                                 <option value="state_id">state</option>
-                                                <option value="party_name">party</option>
-                                                <option value="speech_text">speech_text</option>
+                                                <option value="party_id">party</option>
                                                 <option value="word_count">word_count</option>
                                             </select>
                                             <label for="field">Field</label>
@@ -175,7 +131,8 @@
                 </div>
                 <div class="col right custom-issue">
                     <p> &#128681 Spotted an issue? Please send us a <a
-                            href="http://link%20to%20google%20form/">message</a>.</p>
+                            href="https://docs.google.com/forms/d/e/1FAIpQLSckHcip8EiQRhMo_WTnIT0C8xtNfqSXK15Chce_CN9rGKEv7w/viewform">message</a>.
+                    </p>
                 </div>
 
             </div>
@@ -196,8 +153,31 @@
             </div>
         </div>
         <div id="about">
-            <div class="row">
-                About page info
+            <div class="row about-font">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-content">
+                            Research Ready Archives is a project of Goodly Labs, which has converted the static,
+                            difficult-to-research Congressional Record and Hearings Transcripts into a well-organized,
+                            easy-to-query
+                            database linking floor speeches and committee hearing minutes to data describing Members of
+                            Congress and
+                            their constituencies.<br><br>
+                            After many hundreds of hours of volunteer effort and modest support from the Social Science
+                            Research
+                            Council, Research Ready is now enabling a wave of inquiry into Congressional Members’
+                            utterances on
+                            Capitol Hill. With this open resource, researchers, journalists, and the public are now able
+                            to easily
+                            ask and answer powerful questions revealing the dynamics of Congress Members’ interactions,
+                            shifting
+                            legislative priorities, the interplay between electoral and governing incentives, the
+                            difference between
+                            what political actors say and do… and much more.
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
