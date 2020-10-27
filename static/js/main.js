@@ -81,9 +81,6 @@ var $advance_query_fieldset_html = $(config.advance_query_fieldset)
 // function ************************************************************************************************************
 
 
-
-
-
 function update_autocomplete(element) {
     element.bind('input', function () {
         names_input = {name: element.val()}
@@ -132,12 +129,15 @@ function advance_form_value_factory(element_value, field_map) {
 
     var user_input_type = Array.isArray(field_map[element_value].values) ? "select" : "text";
     var condition_html = create_conditional_field(field_map[element_value].conditionals);
-    var html = element_value == "full_name" ? "<input id='value' class='autocomplete' name='value' type='text' value=''>" : "<input id='value' name='value' type='text' value=''>"
-// todo set the alias to either be the alias set in the queryparamter object or as values to fix the below
+    var html = element_value == "display_name" ? "<input id='value' class='autocomplete' name='value' type='text' value=''>" : "<input id='value' name='value' type='text' value=''>"
+
+    var values = field_map[element_value].values
+    var alias = field_map[element_value].alias != null ? field_map[element_value].alias : field_map[element_value].values
+
     if (user_input_type == "select") {
         html = "<select id='value' name='value'>"
         for (var i = 0; i < field_map[element_value].values.length; i++) {
-            html = html + "<option value='" + field_map[element_value].values[i] + "'>" + field_map[element_value].values[i] + "</option>"
+            html = html + "<option value='" + values[i] + "'>" + alias[i] + "</option>"
         }
         html = html + "</select>"
     }
