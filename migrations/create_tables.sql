@@ -37,3 +37,21 @@ SELECT state_id,district_id
 FROM constituency_list
 INNER JOIN states_list on states_list.state_name = constituency_list.state_name
 INNER JOIN district_list on district_list.district_number = constituency_list.district_number;
+
+-- create new person_list table with desc VALUES
+-- DROP TABLE IF EXISTS person_list_alt;
+-- 
+-- CREATE TABLE person_list_alt (
+-- 	person_id INTEGER PRIMARY KEY AUTOINCREMENT,
+-- 	display_name_asc TEXT,
+-- 	display_name_dsc TEXT
+-- );
+-- 
+-- SELECT display_name as dsp_name_asc, display_name as dsp_name_dsc
+-- FROM person_list
+-- ORDER BY 
+-- 	dsp_name_asc ASC,
+-- 	dsp_name_dsc DESC;
+-- 
+-- INSERT INTO person_list_alt (display_name_asc,display_name_dsc)
+-- SELECT display_name as dsp_name_asc, display_name as dsp_name_dsc
