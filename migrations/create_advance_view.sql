@@ -1,7 +1,15 @@
--- create constituency_list_normalized view
+-- create person_list VIEW
+DROP VIEW IF EXISTS person_list_view;
+
+CREATE VIEW person_list_view as
+SELECT speaker_id,display_name
+FROM person_list
+JOIN speaker_list on person_list.person_id = speaker_list.person_id;
+
+-- create constituency_list_normalized view helper
 DROP VIEW IF EXISTS constituency_list_normalized_view;
 
-CREATE VIEW constituency_list_normalized_view as 
+CREATE VIEW constituency_list_normalized_view as
 SELECT constituency_list_normalized.constituency_id,constituency_list_normalized.state_id,state_name,constituency_list_normalized.district_id,district_number
 FROM constituency_list_normalized
 INNER JOIN states_list on states_list.state_id = constituency_list_normalized.state_id
@@ -10,7 +18,7 @@ INNER JOIN district_list on district_list.district_id = constituency_list_normal
 SELECT * FROM constituency_list_normalized_view;
 
 -- create overall data view
-DROP VIEW IF EXISTS advance_data_view2;
+DROP VIEW IF EXISTS advance_data_view;
 
 -- want columns:
 -- speech_text
@@ -24,22 +32,20 @@ DROP VIEW IF EXISTS advance_data_view2;
 -- proceeding_name
 -- speech date
 
-CREATE VIEW advance_data_view2 as 
+CREATE VIEW advance_data_view as 
 SELECT 
+speaker_list.speaker_id,
 speech_text,
 speech_date,
 word_count,
 display_name,
+constituency_list_normalized_view.constituency_id,
 constituency_list_normalized_view.state_id,
 state_name,
 constituency_list_normalized_view.district_id,
 district_number,
 speaker_list.party_id,
-party_name,
-occasion_name,
-person_role_name,
-chamber_name,
-proceeding_name
+party_name
 FROM speech_list
 INNER JOIN speaker_list on speaker_list.speaker_id = speech_list.speaker_id
 INNER JOIN person_list on person_list.person_id = speaker_list.person_id
