@@ -9,27 +9,33 @@ from utils.database import QueryParser, QueryFilter
 from utils.utils import truncate
 
 # from models import AdvanceDataView
+from utils.database import HelperTableMap
 
 
 # TODO may want to seperate this out and make the querying part into an api
 @application.route('/', methods=["GET", "POST"])
 def base():
-    """
-    todo: may want to remove basic form and create it in the html since the advance form is created in the html/js
-    todo: return error in case of db connection failure (popup)
+    # hard coded helper tables
+    helpers = [
+        HelperTableMap('person_list_view', 'speaker_id', 'display_name'),
+        HelperTableMap('party_list', 'party_id', 'party_id', 'party_name'),
+        HelperTableMap('states_list', 'state_id', 'state_id', 'state_name'),
+        # HelperTableMap('district_list', 'district_id', 'district_id','district_number'),
+    ]
 
-    """
     basic_form = BasicQueryForm()
     if request.method == "POST":
 
         raw_data = request.json["data"]
         print('raw data is:')
         print(raw_data)
-        raw_data['where'] = QueryFilter(raw_data['where']).reformat_date(date_column='speech_date',
-                                                                         from_format='%b %d, %Y')
+        query_filter = QueryFilter(raw_data['where'], raw_data['select'])
+        raw_data['where'] = query_filter.reformat_date(date_column='speech_date',
+                                                       from_format='%b %d, %Y')
+        raw_data['where'], raw_data['select'] = query_filter.remap_query_inputs(helpers)
         print(raw_data['where'])
 
-        query, columns = QueryParser(raw_data, "advance_data_view2", 500).parse()
+        query, columns = QueryParser(raw_data, "advance_data_view", 500, helpers).parse()
         print(f'query is:\n {query}')
         results = db.query(query, connect_and_close=True)
 
