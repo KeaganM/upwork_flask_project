@@ -2,10 +2,29 @@ import sqlalchemy
 from sqlalchemy import create_engine, Table, MetaData
 from sqlalchemy.orm import sessionmaker
 from typing import Union, Tuple, List
+from dataclasses import dataclass
 
 import pandas as pd
 
 from datetime import datetime
+
+import re
+
+
+@dataclass
+class HelperTableMap:
+    table_name: str
+    column_to_join: str
+    column_to_query: str
+    _select_to_change: Union[None,str] = None
+
+    @property
+    def select_to_change(self):
+        return self.column_to_query if not self._select_to_change else self._select_to_change
+
+
+
+
 
 
 class Database():
@@ -60,10 +79,12 @@ class Database():
 
 
 class QueryParser():
-    def __init__(self, raw_data: dict, tablename_or_joins: str, limit: Union[int, None] = None) -> None:
+    def __init__(self, raw_data: dict, tablename_or_joins: str, limit: Union[int, None] = None,
+                 helpers: Union[List[dict], None] = None) -> None:
         self.raw_data = raw_data
         self.table_name = tablename_or_joins
         self.limit = limit
+        self.helpers = helpers
 
     def _parse_select_part(self, select_data: dict) -> list:
         return [f"{item}," if index + 1 < len(select_data) else item for index, item in
@@ -84,17 +105,29 @@ class QueryParser():
 
         return where_parts, first_where, where
 
+    def _create_joins(self):
+        return [f'JOIN {item.table_name} on {self.table_name}.{item.column_to_join} = {item.table_name}.{item.column_to_join}' for item in self.helpers]
+
+
     def _create_query(self, query_parts_dict: dict) -> str:
         query_list = ["SELECT",
                       *query_parts_dict["select_statement"],
                       f"FROM {self.table_name}",
+                      *self._create_joins(),
                       *query_parts_dict["where"],
                       *query_parts_dict["first_where_statement"],
                       *query_parts_dict["where_statement"]]
+
+        # if self.helpers:
+        #     joins = self._create_joins()
+        #     query_list.insert(2,*joins)
+
         if self.limit != None:
             query_list.append(f"LIMIT {self.limit}")
 
-        return " ".join(query_list)
+        query = " ".join(query_list)
+
+        return query
 
     def parse(self, return_columns: bool = True, **kwargs) -> str:
         data = {
@@ -107,7 +140,7 @@ class QueryParser():
         query_parts["select_statement"] = self._parse_select_part(data["select"])
         query_parts["where_statement"], \
         query_parts["first_where_statement"], \
-        query_parts["where"] = self._parse_where_part(data["where"], ("", "choose a value","choose"))
+        query_parts["where"] = self._parse_where_part(data["where"], ("", "choose a value", "choose"))
 
         if return_columns:
             return self._create_query(query_parts), [column.replace(",", "") for column in
@@ -116,9 +149,11 @@ class QueryParser():
 
 
 class QueryFilter:
-    def __init__(self, where_data: List[dict], empty_values: list = ['', 'choose a value','choose']):
+    def __init__(self, where_data: List[dict],select_data: List[str], empty_values: list = ['', 'choose a value', 'choose']):
         self.where_data = where_data
         self.empty_values = empty_values
+        self.select_data = select_data
+
 
     def reformat_date(self, date_column: str, from_format: str, to_format: str = '%Y-%m-%d') -> List[dict]:
         # todo: assuiming you are passing in the correct format; may want to handle a bit better later; need to let it run over multiple items
@@ -133,127 +168,72 @@ class QueryFilter:
         self.where_data[index] = item
         return self.where_data
 
+    def remap_query_inputs(self, helper_table_maps: Union[HelperTableMap]) -> Tuple[List[dict],List[str]]:
+        new_where_data = list()
+        new_select_data = self.select_data[:]
+
+        changed_selected_data = list()
+
+
+        for data in self.where_data:
+            new_where_data.append(data)
+            for item in helper_table_maps:
+                if data['field'] == item.column_to_query:
+                    new_where_data[-1]['field'] = f'{item.table_name}.{item.column_to_query}'
+                    if item.select_to_change not in changed_selected_data:
+                        changed_selected_data.append(item.select_to_change)
+                        if item.select_to_change:
+                            new_select_data[new_select_data.index(item.select_to_change)] = f'{item.table_name}.{item.select_to_change}'
+                        else:
+                            new_select_data[new_select_data.index(item.column_to_query)] = f'{item.table_name}.{item.column_to_query}' if item.column_to_query in new_select_data else new_select_data[new_select_data.index(item.column_to_query)]
+
+        return new_where_data,new_select_data
+
 
 if __name__ == "__main__":
-    path = "sqlite:///../static/db/database.db"
-
-    db = Database(path=path)
-    r = db.query('SELECT * FROM advance_data_view LIMIT 100',True)
-    print(r)
-
-    quit()
-
-    # base_table = sqlalchemy.Table('speech_list', db.metadata, autoload=True)
-    #
-    # desired_fields = ['person_list.full_name', 'speech_list.speech_text']
-
-    # tables = db.engine.table_names()
-    # print(tables)
-    # quit()
-
-    # view_query = [
-    #     'DROP VIEW IF EXISTS data_view;CREATE VIEW data_view AS SELECT',
-    #     *[f'{item},' if index + 1 == len(desired_fields) else item for index, item in enumerate(desired_fields)],
-    #     f'FROM {base_table.name}'
-    # ]
-    #
-    # tables_to_join = list()
-    # for table in tables:
-    #     table_object = sqlalchemy.Table(table, db.metadata, autoload=True)
-    #     if desired_fields[0] in [str(c) for c in table_object.c] and table_object.name != base_table.name:
-    #         # print(f"found in table {table}")
-    #         tables_to_join.append(table_object)
-
-    # print(str(list(base_table.foreign_keys)[0]).split('.')[0].split('\'')[1])
-    # print(base_table.primary_key.columns.values()[0].name)
-
-    # for f_key in base_table.foreign_keys:
-    #     print(f'on {f_key}')
-    #
-    #     raw = str(f_key).split('.')
-    #     table = raw[0].split('\'')[1]
-    #     f_key = raw[1].split('\'')[0]
-    #
-    #     table_object = sqlalchemy.Table(table,db.metadata,autoload=True)
-    #     p_key = table_object.primary_key.columns.values()[0].name
-    #
-    #     if f_key == p_key:
-    #         print(f'table {table} is a match!')
-    #         quit()
-
-    # for table in tables:
-    #     print(f'on table {table}')
-    #     table_object = sqlalchemy.Table(table, db.metadata, autoload=True)
-    #     f_key_str = str(f_key).split('.')[1].split('\'')[1]
-    #     print(f_key_str)
-
-    # try:
-    #     p_key_str = table_object.primary_key.columns.values()[0].name
-    # except IndexError:
-    #     print("did not find a primary key")
-    #     continue
-    # print(f"fkey is {f_key_str}\npkey is {p_key_str}")
-    # if f_key_str == p_key_str:
-    #     print(f'{f_key_str} matached to {p_key_str}')
-    #     quit()
-    # print(''.join(['*' for x in range(200)]))
-
-    # print(tables_to_join)
-
-    # test = sqlalchemy.Table('constituency_characteristics', db.metadata, autoload=True)
-    # print(test.primary_key)
-
-    # print(test)
-    #
-    # columns = test.c
-    # primary_key = test.primary_key
-    # for_keys = test.foreign_keys
-    #
-    # print("columns")
-    # for c in columns:
-    #     print(c.name, type(c.type))
-    #
-    # print('primary keys')
-    # for key in primary_key:
-    #     print(key)
-    #
-    # print('f keys')
-    # for f_key in for_keys:
-    #     print(f_key)
+    helpers = [
+        HelperTableMap(table_name='person_list_view', column_to_join='speaker_id', column_to_query='display_name'),
+        HelperTableMap('party_list', 'party_id', 'party_id','party_name'),
+    ]
 
     data = {
 
         'where':
             [
-                {'logic_operator': 'AND', 'field': 'full_name', 'value': '', 'conditional': '='},
+                {'logic_operator': 'AND', 'field': 'display_name', 'value': 'Ted Cruz', 'conditional': '='},
                 {'logic_operator': 'AND', 'field': 'district', 'value': 'Choose a Value', 'conditional': '='},
                 {'logic_operator': 'AND', 'field': 'state_name', 'value': 'Choose A Value', 'conditional': '='},
-                {'logic_operator': 'AND', 'field': 'party_name', 'value': 'Choose A Value', 'conditional': '='},
+                {'logic_operator': 'AND', 'field': 'party_id', 'value': '1', 'conditional': '='},
                 {'logic_operator': 'AND', 'field': 'speech_date', 'value': '', 'conditional': '='},
-                {'logic_operator': 'AND', 'field': 'district', 'value': '', 'conditional': '='}
+                {'logic_operator': 'AND', 'field': 'district', 'value': '', 'conditional': '='},
+                {'logic_operator': 'AND', 'field': 'display_name', 'value': 'Ted Budd', 'conditional': '='},
             ],
         'select':
             [
-                'full_name',
+                'display_name',
                 'party_name',
                 'speech_text',
-                'speech_date'
+                'speech_date',
             ]
     }
 
-    query_filter = QueryFilter(data['where'], ['', 'choose a value'])
+    query_filter = QueryFilter(data['where'],data['select'], ['', 'choose a value'])
     data['where'] = query_filter.reformat_date(date_column='speech_date', from_format='%b %d, %Y')
+
     for item in data['where']:
         print(item)
-    quit()
 
-    query_parser = QueryParser(data, "advance_data_view", 100)
+    data['where'],data['select'] = query_filter.remap_query_inputs(helpers)
+    print(data['where'])
+    print(data['select'])
+
+    query_parser = QueryParser(data, "advance_data_view", 100,helpers)
     query, columns = query_parser.parse(return_columns=True)
     print(query)
 
-    query_results = db.query(query, connect_and_close=True)
-    query_results_json = db.query_results_to_json(query_results, columns)
-    print(query_results_json)
-
-    df = pd.DataFrame(data=query_results_json)
-    print(df)
+    # query_results = db.query(query, connect_and_close=True)
+    # query_results_json = db.query_results_to_json(query_results, columns)
+    # print(query_results_json)
+    #
+    # df = pd.DataFrame(data=query_results_json)
+    # print(df)
