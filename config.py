@@ -1,4 +1,4 @@
-current_settings = 'local'
+current_settings = 'production'
 
 if current_settings == 'local':
     from settings.local import *
